@@ -1,9 +1,9 @@
 
 import './App.css';
-
+import Body from './components/Body';
 function App() {
   return (
-    <h5 className='text-orange-800'>going to build watch-wave-gpt project</h5>
+    <Body />
   );
 }
 
