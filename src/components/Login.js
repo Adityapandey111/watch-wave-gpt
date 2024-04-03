@@ -1,10 +1,30 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Header from './Header'
+import { checkValidData } from '../utils/Validate';
+
+
 function Login() {
   const [isSignIn,setIsSignIn]=useState(true);
+  const email=useRef(null);
+  const password=useRef(null);
+  const [errorMessage,setErrorMessage]=useState(null);
+
+
   const toggleSignInForm=()=>{
     setIsSignIn(!isSignIn);
   }
+
+
+  const handleButtonClick=()=>{
+    // validate the form data
+    // console.log(email.current.value);
+    // console.log(password.current.value);
+    const errorData = checkValidData(email.current.value,password.current.value);
+    setErrorMessage(errorData);
+    console.log(errorMessage);
+    
+  }
+
   return (
     <div>
       <Header />
@@ -13,7 +33,9 @@ function Login() {
         alt="background image" />
       </div>
 
-      <form className='text-white absolute w-1/3 my-32 p-12 bg-slate-900 mx-auto left-0 right-0 bg-opacity-85'>
+      <form 
+      onSubmit={(e)=>e.preventDefault()}
+      className='text-white absolute w-1/3 my-32 p-12 bg-black mx-auto left-0 right-0 bg-opacity-85'>
         <h1 className='font-bold text-3xl py-4'>{isSignIn? "Sign In":"Sign Up"}</h1>
         {
           !isSignIn && <input 
@@ -28,14 +50,23 @@ function Login() {
           className='p-4 my-4 w-full bg-gray-700 rounded-lg' />
         }
        <input 
+       ref={email}
        type="text" 
        placeholder='Email' 
        className='p-4 my-4 w-full bg-gray-700 rounded-lg' /> 
        <input 
+       ref={password}
        type="password" 
        placeholder='Password' 
        className='p-4 my-4 w-full bg-gray-700 rounded-lg' /> 
-       <button className='p-4 my-6 bg-red-700 w-full rounded-lg'>{isSignIn? "Sign In":"Sign Up"}</button>  
+
+      <p className='text-red-700 p-4 my-2 w-full text-2xl font-bold'>
+        {errorMessage}
+      </p>
+
+       <button 
+       onClick={handleButtonClick}
+       className='p-4 my-6 bg-red-700 w-full rounded-lg'>{isSignIn? "Sign In":"Sign Up"}</button>  
       <p 
       onClick={toggleSignInForm}
       className='p-4 my-4 cursor-pointer'>{isSignIn? "New to Netflix? Sign Up Now":"Already have a account? Sign In now"}</p>
